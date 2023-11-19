@@ -1,5 +1,6 @@
 from flask import current_app as app
 from flask import render_template,redirect, request, session, url_for
+import time
 from .utils.database.database import database
 from pprint import pprint
 import json
@@ -15,20 +16,26 @@ def login(func):
             return redirect(url_for("login", next=request.url))
     return secure_function
 
-@app.route('/')
-def root():
-    return redirect('/login')
+# @app.route('/')
+# def root():
+#     print("Here in root")
+#     # return redirect('/login')
+#     return {}
 
-@app.route('/home')
-def home():
-    return render_template('home.html', user=session)
-
-
-@app.route('/login')
-def login():
-    return render_template('login.html')
+# @app.route('/home')
+# def home():
+#     return render_template('home.html', user=session)
 
 
-@app.route('/signup')
-def signup():
-    return render_template('signup.html')
+# @app.route('/login')
+# def login():
+#     return render_template('login.html')
+
+
+# @app.route('/signup')
+# def signup():
+#     return render_template('signup.html')
+
+@app.route('/time')
+def get_current_time():
+    return {'time': time.time()}
