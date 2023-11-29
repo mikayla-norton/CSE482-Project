@@ -24,3 +24,5 @@ yarn-error.log*
 
 
 *.csv
+venv/
+__pycache__/
