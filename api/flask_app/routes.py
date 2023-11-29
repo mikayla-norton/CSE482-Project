@@ -7,6 +7,8 @@ import json
 import random
 import functools
 
+from AlgorithmScripts.project_pyscript import movie_based_recs
+
 db=database()
 
 def login(func):
@@ -22,9 +24,15 @@ def get_current_time():
     return {'time': time.time()}
 
 
-@app.route('/movie-based-recommendation')
-def get_movie_based_recommendation(data):
-    print(data)
-    return {"data": {
-        "test": "Yes"
-    }}
+@app.route('/    data = request.get_json()', methods=['POST'])
+def get_movie_based_recommendation():
+    data = request.get_json()
+    moviesList = data["movies"]
+    print(moviesList)
+
+    movieRecommendations = movie_based_recs(moviesList)
+    print(movieRecommendations)
+
+    return movieRecommendations
+
+

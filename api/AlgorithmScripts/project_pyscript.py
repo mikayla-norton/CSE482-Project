@@ -5,8 +5,8 @@ from sklearn.metrics.pairwise import cosine_similarity
 
 
 # FILES
-ratings = pd.read_csv("/Users/joelnataren9/CSE482-Project/Algorithm Scripts/rating.csv")
-movies = pd.read_csv("/Users/joelnataren9/CSE482-Project/Algorithm Scripts/movie.csv") ##Use your local path
+ratings = pd.read_csv("/Users/joelnataren9/CSE482-Project/api/AlgorithmScripts/rating.csv")
+movies = pd.read_csv("/Users/joelnataren9/CSE482-Project/api/AlgorithmScripts/movie.csv") ##Use your local path
 
 rating_piece = ratings.loc[:, ["userId", "movieId", "rating"]]
 movie_piece = movies.loc[:, ["movieId", "title", "genres"]]
@@ -150,7 +150,7 @@ cos_sim_ofmovies = pd.DataFrame(
 )
 
 
-def movie_based_recs(cos_sim_ofmovies, user_inputs, num_to_return=5):
+def movie_based_recs(user_inputs, cos_sim_ofmovies=cos_sim_ofmovies, num_to_return=5):
     """Return the most similar movies to selected movie(s)
 
     Parameters
@@ -188,4 +188,4 @@ def movie_based_recs(cos_sim_ofmovies, user_inputs, num_to_return=5):
 
 
 user_inputs = ["2001: A Space Odyssey (1968)", "Clerks (1994)"]
-print(movie_based_recs(cos_sim_ofmovies, user_inputs))
+print(movie_based_recs(user_inputs, cos_sim_ofmovies=cos_sim_ofmovies))
