@@ -16,26 +16,15 @@ def login(func):
             return redirect(url_for("login", next=request.url))
     return secure_function
 
-# @app.route('/')
-# def root():
-#     print("Here in root")
-#     # return redirect('/login')
-#     return {}
-
-# @app.route('/home')
-# def home():
-#     return render_template('home.html', user=session)
-
-
-# @app.route('/login')
-# def login():
-#     return render_template('login.html')
-
-
-# @app.route('/signup')
-# def signup():
-#     return render_template('signup.html')
 
 @app.route('/time')
 def get_current_time():
     return {'time': time.time()}
+
+
+@app.route('/movie-based-recommendation')
+def get_movie_based_recommendation(data):
+    print(data)
+    return {"data": {
+        "test": "Yes"
+    }}
