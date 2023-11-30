@@ -7,6 +7,7 @@ import json
 import random
 import functools
 import pandas as pd
+import os
 
 class TrieNode:
     def __init__(self):
@@ -54,7 +55,8 @@ class Trie:
 # Initialize trie
 trie = Trie()
 print("Loading movie titles...")
-df = pd.read_csv('/Users/joelnataren9/CSE482-Project/api/AlgorithmScripts/movie.csv')
+df = pd.read_csv(os.path.join(os.path.dirname(__file__), '..', 'AlgorithmScripts', 'movie.csv')) #TODO: File should be in AlgorithmScripts folder
+
 for title in df['title']:
     trie.insert(title.lower())
 from AlgorithmScripts.project_pyscript import movie_based_recs

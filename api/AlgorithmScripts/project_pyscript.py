@@ -2,11 +2,13 @@
 import numpy as np
 import pandas as pd
 from sklearn.metrics.pairwise import cosine_similarity
+import os
 
 
 # FILES
-ratings = pd.read_csv("/Users/joelnataren9/CSE482-Project/api/AlgorithmScripts/rating.csv")
-movies = pd.read_csv("/Users/joelnataren9/CSE482-Project/api/AlgorithmScripts/movie.csv") ##Use your local path
+# TODO: Make sure that the two csv files are in the same directory as this file
+ratings = pd.read_csv(os.path.join(os.path.dirname(__file__), 'rating.csv'))
+movies = pd.read_csv(os.path.join(os.path.dirname(__file__), 'movie.csv'))
 
 rating_piece = ratings.loc[:, ["userId", "movieId", "rating"]]
 movie_piece = movies.loc[:, ["movieId", "title", "genres"]]
