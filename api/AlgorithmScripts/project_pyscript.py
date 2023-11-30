@@ -10,6 +10,11 @@ movies = pd.read_csv("/Users/joelnataren9/CSE482-Project/api/AlgorithmScripts/mo
 
 rating_piece = ratings.loc[:, ["userId", "movieId", "rating"]]
 movie_piece = movies.loc[:, ["movieId", "title", "genres"]]
+try:
+    #Print the first 3 rows of the title column
+    movie_piece['title'] = movie_piece['title'].apply(lambda x: x.lower() if type(x) == str else x)
+except Exception as error:
+    print(" converting to lowercase", error)
 whole = pd.merge(rating_piece, movie_piece)
 whole = whole.iloc[:1_000_000, :]
 
@@ -102,14 +107,25 @@ def user_based_recs(user_rating, user_inputs, num_neighbors=4, num_to_return=5):
     return dict(list(sorted_reccs.items())[-num_to_return:][::-1])
 
 
-user_inputs = {
-    "Twelve Monkeys (a.k.a. 12 Monkeys) (1995)": 3,
-    "Jumanji (1995)": 2,
-    "City of Lost Children, The (Cité des enfants perdus, La) (1995)": 4,
-    "Monty Python and the Holy Grail (1975)": 5,
-}
-check_func = user_based_recs(user_rating, user_inputs)
-print(check_func)
+######
+#   
+#   Test Case for user_based_recs
+#
+# ####
+try:
+    user_inputs = {
+        "Twelve Monkeys (a.k.a. 12 Monkeys) (1995)": 3,
+        "Jumanji (1995)": 2,
+        "City of Lost Children, The (Cité des enfants perdus, La) (1995)": 4,
+        "Monty Python and the Holy Grail (1975)": 5,
+    }
+    # make the user input lowercase to match the movie titles 
+    user_inputs = {k.lower(): v for k, v in user_inputs.items()}
+
+    check_func = user_based_recs(user_rating, user_inputs)
+    print(check_func)
+except Exception as error:
+    print(error)
 
 # CREATE ON HOT OF CATEGORIES
 unique = []
@@ -186,6 +202,15 @@ def movie_based_recs(user_inputs, cos_sim_ofmovies=cos_sim_ofmovies, num_to_retu
         .nlargest(num_to_return)
     )
 
-
-user_inputs = ["2001: A Space Odyssey (1968)", "Clerks (1994)"]
-print(movie_based_recs(user_inputs, cos_sim_ofmovies=cos_sim_ofmovies))
+########
+#
+# Test Case for movie_based_recs
+#
+########
+try:
+    user_inputs = ["2001: A Space Odyssey (1968)", "Clerks (1994)"]
+    # make the user input lowercase to match the movie titles
+    user_inputs = [title.lower() for title in user_inputs]
+    print(movie_based_recs(user_inputs, cos_sim_ofmovies=cos_sim_ofmovies))
+except Exception as error:
+    print(error)

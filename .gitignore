@@ -24,3 +24,7 @@ yarn-error.log*
 
 
 *.csv
+venv/
+api/__pycache__/
+api/AlgorithmScripts/__pycache__/
+api/flask_app/__pycache__/
