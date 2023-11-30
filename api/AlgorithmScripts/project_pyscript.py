@@ -5,21 +5,19 @@ from sklearn.metrics.pairwise import cosine_similarity
 
 
 # FILES
-ratings = pd.read_csv("/Users/joelnataren9/CSE482-Project/api/AlgorithmScripts/rating.csv")
-movies = pd.read_csv("/Users/joelnataren9/CSE482-Project/api/AlgorithmScripts/movie.csv") ##Use your local path
+ratings = pd.read_csv("AlgorithmScripts/rating.csv")
+movies = pd.read_csv("AlgorithmScripts/movie.csv")  # Use your local path
 
 rating_piece = ratings.loc[:, ["userId", "movieId", "rating"]]
 movie_piece = movies.loc[:, ["movieId", "title", "genres"]]
-try:
-    #Print the first 3 rows of the title column
-    movie_piece['title'] = movie_piece['title'].apply(lambda x: x.lower() if type(x) == str else x)
-except Exception as error:
-    print(" converting to lowercase", error)
+
+# Ensure titles are lowercase
+movie_piece['title'] = movie_piece['title'].str.lower()
+
 whole = pd.merge(rating_piece, movie_piece)
-whole = whole.iloc[:1_000_000, :]
-
-
-user_rating = whole.pivot_table(index=["userId"], columns=["title"], values="rating")
+whole = whole.iloc[:9_000_000, :]
+user_rating = whole.pivot_table(index=["userId"], columns=[
+                                "title"], values="rating")
 user_rating.index = [num for num in range(user_rating.shape[0])]
 ur_np = user_rating.astype("float").to_numpy()
 
@@ -55,7 +53,7 @@ def user_based_recs(user_rating, user_inputs, num_neighbors=4, num_to_return=5):
 
     user_based_recs(user_rating, user_inputs)
     """
-    ## DATAFRAME MANIPULATIONS
+    # DATAFRAME MANIPULATIONS
     # Add user input to user ratings
     user_rating.loc[user_rating.shape[0], user_inputs.keys()] = user_inputs
     # Turn DF to np.array
@@ -65,7 +63,7 @@ def user_based_recs(user_rating, user_inputs, num_neighbors=4, num_to_return=5):
     # ADDING THE INDICIES
     cols_windex = np.column_stack((index_lst, ur_np))
 
-    ## ROW SELECTION MANIPULATIONS
+    # ROW SELECTION MANIPULATIONS
     # Select last row (user input)
     row = cols_windex[-1]
     # Mask on non nan value
@@ -102,13 +100,14 @@ def user_based_recs(user_rating, user_inputs, num_neighbors=4, num_to_return=5):
     for key in user_inputs.keys():
         del reccomendations[key]
     # Sort dict and select top n
-    sorted_reccs = dict(sorted(reccomendations.items(), key=lambda item: item[1]))
+    sorted_reccs = dict(
+        sorted(reccomendations.items(), key=lambda item: item[1]))
     # Return top n suggestions (list of tuples in descending order)
     return dict(list(sorted_reccs.items())[-num_to_return:][::-1])
 
 
 ######
-#   
+#
 #   Test Case for user_based_recs
 #
 # ####
@@ -119,7 +118,7 @@ try:
         "City of Lost Children, The (Cité des enfants perdus, La) (1995)": 4,
         "Monty Python and the Holy Grail (1975)": 5,
     }
-    # make the user input lowercase to match the movie titles 
+    # make the user input lowercase to match the movie titles
     user_inputs = {k.lower(): v for k, v in user_inputs.items()}
 
     check_func = user_based_recs(user_rating, user_inputs)
@@ -194,7 +193,8 @@ def movie_based_recs(user_inputs, cos_sim_ofmovies=cos_sim_ofmovies, num_to_retu
     """
     reccs = []
     for title in user_inputs:
-        reccs.append(cos_sim_ofmovies.loc[cos_sim_ofmovies[title] > 0.0, title])
+        reccs.append(
+            cos_sim_ofmovies.loc[cos_sim_ofmovies[title] > 0.0, title])
     return dict(
         pd.concat(reccs, axis=1)
         .drop(user_inputs, axis=0)
@@ -202,13 +202,15 @@ def movie_based_recs(user_inputs, cos_sim_ofmovies=cos_sim_ofmovies, num_to_retu
         .nlargest(num_to_return)
     )
 
+
 ########
 #
 # Test Case for movie_based_recs
 #
 ########
 try:
-    user_inputs = ["2001: A Space Odyssey (1968)", "Clerks (1994)"]
+    user_inputs = [
+        "2001: A Space Odyssey (1968)", "Clerks (1994)", "I Drink Your Blood (1970)"]
     # make the user input lowercase to match the movie titles
     user_inputs = [title.lower() for title in user_inputs]
     print(movie_based_recs(user_inputs, cos_sim_ofmovies=cos_sim_ofmovies))
