@@ -2,11 +2,13 @@
 import numpy as np
 import pandas as pd
 from sklearn.metrics.pairwise import cosine_similarity
+import os
 
 
 # FILES
-ratings = pd.read_csv("AlgorithmScripts/rating.csv")
-movies = pd.read_csv("AlgorithmScripts/movie.csv")  # Use your local path
+# TODO: Make sure that the two csv files are in the same directory as this file
+ratings = pd.read_csv(os.path.join(os.path.dirname(__file__), 'rating.csv'))
+movies = pd.read_csv(os.path.join(os.path.dirname(__file__), 'movie.csv'))
 
 rating_piece = ratings.loc[:, ["userId", "movieId", "rating"]]
 movie_piece = movies.loc[:, ["movieId", "title", "genres"]]
@@ -15,7 +17,7 @@ movie_piece = movies.loc[:, ["movieId", "title", "genres"]]
 movie_piece['title'] = movie_piece['title'].str.lower()
 
 whole = pd.merge(rating_piece, movie_piece)
-whole = whole.iloc[:9_000_000, :]
+whole = whole.iloc[:1_000_000, :]
 user_rating = whole.pivot_table(index=["userId"], columns=[
                                 "title"], values="rating")
 user_rating.index = [num for num in range(user_rating.shape[0])]
@@ -210,7 +212,7 @@ def movie_based_recs(user_inputs, cos_sim_ofmovies=cos_sim_ofmovies, num_to_retu
 ########
 try:
     user_inputs = [
-        "2001: A Space Odyssey (1968)", "Clerks (1994)", "I Drink Your Blood (1970)"]
+        "2001: A Space Odyssey (1968)", "Clerks (1994)"]
     # make the user input lowercase to match the movie titles
     user_inputs = [title.lower() for title in user_inputs]
     print(movie_based_recs(user_inputs, cos_sim_ofmovies=cos_sim_ofmovies))

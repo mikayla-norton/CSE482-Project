@@ -8,6 +8,7 @@ import json
 import random
 import functools
 import pandas as pd
+import os
 
 
 class TrieNode:
@@ -58,7 +59,10 @@ class Trie:
 # Initialize trie
 trie = Trie()
 print("Loading movie titles...")
-df = pd.read_csv('AlgorithmScripts/movie.csv')
+# TODO: File should be in AlgorithmScripts folder
+df = pd.read_csv(os.path.join(os.path.dirname(__file__),
+                 '..', 'AlgorithmScripts', 'movie.csv'))
+
 for title in df['title']:
     trie.insert(title.lower())
 print("Done loading movie titles.")
