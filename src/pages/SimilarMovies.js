@@ -1,13 +1,24 @@
 import React, {useEffect, useState} from 'react'
 import SearchBar from './components/SearchBar';
 
+/**
+ * Uses the search bar component to get a list of movies
+ * and then uses the list of movies to get recommendations
+ * It does the movie based recomendation 
+ * @returns 
+ */
 export default function SimilarMovies() {
     const [results, setResults] = useState([]);
     const [recommendations, setRecommendations] = useState([]);
     const [movies, setMoviesList] = useState([]);
 
+    console.log(results)
+
+    /**
+     * 
+     * @param movies: list of movies to get recommendations for
+     */
     const getMovieBasedRecommendations = async (movies) => {
-        // TODO: Get all movies from user by searching
         try {
             console.log(movies)
             let listofMovies = movies;

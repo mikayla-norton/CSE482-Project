@@ -26,7 +26,7 @@ user_rating.index = [num for num in range(user_rating.shape[0])]
 ur_np = user_rating.astype("float").to_numpy()
 
 
-def user_based_recs(user_rating, user_inputs, num_neighbors=4, num_to_return=5):
+def user_based_recs(user_inputs ,user_rating=user_rating, num_neighbors=4, num_to_return=5):
     """Given a user input, return move reccomendations
 
     Parameters
@@ -124,8 +124,9 @@ try:
     # make the user input lowercase to match the movie titles 
     user_inputs = {k.lower(): v for k, v in user_inputs.items()}
 
-    check_func = user_based_recs(user_rating, user_inputs)
-    print(check_func)
+    check_func = user_based_recs(user_inputs, user_rating=user_rating)
+    # print(check_func)
+    print(("Local test for user_based_recs passed!"))
 except Exception as error:
     print(error)
 
@@ -213,6 +214,9 @@ try:
     user_inputs = ["2001: A Space Odyssey (1968)", "Clerks (1994)"]
     # make the user input lowercase to match the movie titles
     user_inputs = [title.lower() for title in user_inputs]
-    print(movie_based_recs(user_inputs, cos_sim_ofmovies=cos_sim_ofmovies))
+    recommendations = (movie_based_recs(user_inputs, cos_sim_ofmovies=cos_sim_ofmovies))
+    # print(recommendations)
+    print("Local test for movie_based_recs passed!")
+    
 except Exception as error:
     print(error)

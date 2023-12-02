@@ -59,7 +59,7 @@ df = pd.read_csv(os.path.join(os.path.dirname(__file__), '..', 'AlgorithmScripts
 
 for title in df['title']:
     trie.insert(title.lower())
-from AlgorithmScripts.project_pyscript import movie_based_recs
+from AlgorithmScripts.project_pyscript import movie_based_recs, user_based_recs
 print("Done loading movie titles.")
 
 db=database()
@@ -88,6 +88,18 @@ def get_movie_based_recommendation():
 
     return movieRecommendations
 
+@app.route("/user-based-recommendation", methods=['POST'])
+def get_user_based_recommendation():
+    data = request.get_json()
+    userInputs = data["userMovies"]
+    print(userInputs)
+    userRecommendations = user_based_recs(userInputs)
+    # replace all non integer values with 0 from my dictionary of recommendations 
+    for key in userRecommendations:
+        print(pd.isna(userRecommendations[key]))
+        if (pd.isna(userRecommendations[key])):
+            userRecommendations[key] = 0.0
+    return userRecommendations
 
 @app.route('/search')
 def search_movies():
