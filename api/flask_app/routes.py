@@ -1,5 +1,6 @@
+from AlgorithmScripts.project_pyscript import movie_based_recs
 from flask import current_app as app, jsonify
-from flask import render_template,redirect, request, session, url_for
+from flask import render_template, redirect, request, session, url_for
 import time
 from .utils.database.database import database
 from pprint import pprint
@@ -9,10 +10,12 @@ import functools
 import pandas as pd
 import os
 
+
 class TrieNode:
     def __init__(self):
         self.children = {}
         self.is_end_of_word = False
+
 
 class Trie:
     def __init__(self):
@@ -30,7 +33,7 @@ class Trie:
             print("Error inserting word")
 
     def search(self, prefix, n):
-        try: 
+        try:
             results = []
             node = self.root
             for char in prefix:
@@ -52,17 +55,21 @@ class Trie:
         for char in node.children:
             self._dfs(node.children[char], prefix + char, results, n)
 
+
 # Initialize trie
 trie = Trie()
 print("Loading movie titles...")
-df = pd.read_csv(os.path.join(os.path.dirname(__file__), '..', 'AlgorithmScripts', 'movie.csv')) #TODO: File should be in AlgorithmScripts folder
+# TODO: File should be in AlgorithmScripts folder
+df = pd.read_csv(os.path.join(os.path.dirname(__file__),
+                 '..', 'AlgorithmScripts', 'movie.csv'))
 
 for title in df['title']:
     trie.insert(title.lower())
 from AlgorithmScripts.project_pyscript import movie_based_recs, user_based_recs
 print("Done loading movie titles.")
 
-db=database()
+db = database()
+
 
 def login(func):
     @functools.wraps(func)
