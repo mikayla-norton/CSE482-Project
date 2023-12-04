@@ -17,6 +17,7 @@ const ProtectedRoute = ({ children }) => {
 
   return children;
 };
+import MovieRecommendationsResult from "./pages/MovieRecommendationResult"
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
         <Route exact path="/" element={<ProtectedRoute><HomePage /></ProtectedRoute>} />
         <Route exact path="/similar-movies" element={<ProtectedRoute><SimilarMovies/></ProtectedRoute>}/>
         <Route exact path="/personalized-recommendations" element={<ProtectedRoute><PersonalizedRecommendations/></ProtectedRoute>}/>
+        <Route exact path="/movie-recommendations-result" element={<MovieRecommendationsResult/>}/>
         <Route exact path="/login" element={<Login />} />
         <Route exact path="/signup" element={<SignUp />} />
       </Routes>
