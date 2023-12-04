@@ -5,7 +5,6 @@ import {query, getDocs, collection, where, doc, updateDoc} from "firebase/firest
 import {db} from "../firebaseConfig";
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-import { useNavigate } from 'react-router-dom'
 
 const tempMovieList = [
     "2001: A Space Odyssey (1968)",
@@ -49,7 +48,6 @@ export default function PersonalizedRecommendations() {
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [currentTitle, setCurrentTitle] = useState("");
     const { currentUser, logOut } = useAuth();
-    const navigate = useNavigate();
     const navigate = useNavigate();
     const [ratedMovies, setRatedMovies] = useState([]);
 
@@ -151,11 +149,8 @@ export default function PersonalizedRecommendations() {
                         )}
                     </div>
                 </div>
-                <button onClick={getUserRecommendations} className='rounded-md  p-2 bg-green-500 text-gray-700 m-5'>
+                <button onClick={getUserRecommendations} className="home-button">
                     Get Recommendations
-                </button>
-                <button className='absolute bottom-3 right-3 p-2' onClick={() => navigate("/")}>
-                    Back Home
                 </button>
             </div> 
             {

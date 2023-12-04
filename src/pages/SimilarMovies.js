@@ -2,7 +2,6 @@ import React, {useEffect, useState} from 'react'
 import SearchBar from './components/SearchBar';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-import { useNavigate } from 'react-router-dom'
 
 
 /**
@@ -17,7 +16,6 @@ export default function SimilarMovies() {
     const [movies, setMoviesList] = useState([]);  // clear out the list inside later when connected to backend
     const navigate = useNavigate();
     const { logOut } = useAuth();
-    const navigate = useNavigate();
 
     console.log(results);
 
@@ -56,6 +54,10 @@ export default function SimilarMovies() {
         }
     }
 
+    const displayMovieRecommendations = (movies) => {
+        navigate("/movie-recommendations-result", { state: { recommendation: "movie", movies: movies } });
+    }
+
     // Logout handler
     const handleLogout = async () => {
         try {
@@ -90,7 +92,7 @@ export default function SimilarMovies() {
                                     <button  className=''>
                                         {title}
                                     </button>
-                                    <button  onClick={() => {setMoviesList([...movies, title])}} className='p-2 bg-green-500 text-gray-700'>
+                                    <button  onClick={() => {setMoviesList([...movies, title])}}  className="home-button">
                                         Add
                                     </button>
                                 </div>
@@ -108,7 +110,7 @@ export default function SimilarMovies() {
                         )}
                     </div>
                 </div>
-                <button onClick={() => {getMovieBasedRecommendations(movies)}} className='rounded-md  p-2 bg-green-500 text-gray-700 m-5'>
+                <button onClick={() => {getMovieBasedRecommendations(movies)}} className="home-button">
                     Get Recommendations
                 </button>
             </div> 
