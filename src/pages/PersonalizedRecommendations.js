@@ -2,7 +2,9 @@ import React, {useEffect, useState} from 'react'
 import SearchBar from './components/SearchBar';
 import RatingMovie from './components/RatingMovie';
 import {query, getDocs, collection, where, doc, updateDoc} from "firebase/firestore";
-import {db} from "../firebaseConfig"
+import {db} from "../firebaseConfig";
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
 
 const tempMovieList = [
     "2001: A Space Odyssey (1968)",
@@ -43,11 +45,15 @@ export default function PersonalizedRecommendations() {
     const [results, setResults] = useState([]);
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [currentTitle, setCurrentTitle] = useState("");
+    const { currentUser, logOut } = useAuth();
+    const navigate = useNavigate();
     
 
     const getUserRecommendations = async (movie) => {
+
         //TODO: Get the current user's email
-        let queryForUser = query(collection(db, "users"), where("email", "==", "joelnataren9@hotmail.com")); 
+        const userEmail = currentUser.email;
+        let queryForUser = query(collection(db, "users"), where("email", "==", userEmail)); 
         let querySnapshot = await getDocs(queryForUser);
         let userDoc = querySnapshot.docs[0];
 
@@ -58,7 +64,7 @@ export default function PersonalizedRecommendations() {
         }
         console.log("data for user based:",data)
 
-        let response = await fetch("http://localhost:8080/user-based-recommendation", {
+        let response = await fetch("http://localhost:8081/user-based-recommendation", {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json'
@@ -76,8 +82,26 @@ export default function PersonalizedRecommendations() {
         setModalIsOpen(!modalIsOpen);
     }
 
+    // Logout handler
+    const handleLogout = async () => {
+        try {
+            await logOut();
+            navigate('/login');
+        } catch (error) {
+            console.error('Logout Failed:', error);
+        }
+    };
+
+    const handleGoHome = () => {
+        navigate('/');
+    };
+
     return (
         <section className='main-content'> 
+            <div className="buttons-container">
+                <button onClick={handleGoHome} className="home-button">Home</button>
+                <button onClick={handleLogout} className="logout-button">Log Out</button>
+            </div>
             <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> 
             <div className="absolute w-[80vw] bg-black text-white flex flex-col z-30 p-3 h-[80vh] justify-center items-center"> 
                 <h1 className='text-2xl'>Personalized Picks</h1>
@@ -96,5 +120,5 @@ export default function PersonalizedRecommendations() {
                 modalIsOpen && <RatingMovie modalIsOpen={modalIsOpen} setModalIsOpen={setModalIsOpen} currentTitle={currentTitle} />
             }
         </section>
-  )
+  );
 }

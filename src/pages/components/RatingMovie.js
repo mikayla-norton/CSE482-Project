@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react'
 import {query, getDocs, collection, where, doc, updateDoc} from "firebase/firestore";
 import {db} from "../../firebaseConfig"
+import { useAuth } from '../../contexts/AuthContext';
 
 
 // TODO: CHange email constant to the current user's email
@@ -10,6 +11,8 @@ export default function RatingMovie(props) {
 
     const ratings = [1, 2, 3, 4, 5];
     const [rating, setRating] = useState(0);
+    const { currentUser } = useAuth();
+    
 
     const closeModal = () => {
         props.setModalIsOpen(false);
@@ -20,21 +23,35 @@ export default function RatingMovie(props) {
         let intRating = parseInt(e.target.innerText);
         setRating(intRating);
     }
-
+    
     const addRatingToUser = async (movie, rating) => {
-        let queryForUser = query(collection(db, "users"), where("email", "==", EMAIL)); //TODO: Get the current user's email
+        if (!currentUser) {
+            console.error("No user logged in");
+            return;
+        }
+    
+        const userEmail = currentUser.email; // Use the current user's email
+        let queryForUser = query(collection(db, "users"), where("email", "==", userEmail));
         let querySnapshot = await getDocs(queryForUser);
+    
+        if (querySnapshot.empty) {
+            console.error("User document does not exist");
+            return;
+        }
+    
         let userDoc = querySnapshot.docs[0];
-
-        let currentMovies = userDoc.data().movies;
+        let userData = userDoc.data();
+    
+        // Initialize currentMovies as an object if it doesn't exist
+        let currentMovies = userData.movies ? { ...userData.movies } : {};
         currentMovies[props.currentTitle] = rating;
-
+    
         // Update the user's movies in the database
         await updateDoc(doc(db, "users", userDoc.id), {
             movies: currentMovies
-        })
+        });
     }
-        
+
     useEffect(() => {
         if (rating !== 0) {
             addRatingToUser(props.currentTitle, rating);

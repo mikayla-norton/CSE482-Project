@@ -7,7 +7,7 @@ export default function SearchBar({ onSearch }) {
     useEffect(() => {
       const search = async () => {
         if (query) {
-          const response = await axios.get(`http://localhost:8080/search?query=${query}&n=5`);
+          const response = await axios.get(`http://localhost:8081/search?query=${query}&n=5`);
           onSearch(response.data);
         } else {
           onSearch([]);

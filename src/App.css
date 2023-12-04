@@ -180,3 +180,32 @@ input[type="submit"]:active
     height: calc(20vw - 2px);
   }
 }
+
+.buttons-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  display: flex;
+  align-items: center;
+  z-index: 1000; /* Ensure they are above other elements */
+}
+
+.home-button,
+.logout-button {
+  padding: 10px 20px;
+  margin-left: 10px; /* Add space between buttons */
+  background-color: rgb(162, 0, 255); /* Primary theme color */
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-family: 'Quicksand', sans-serif;
+  font-weight: 500;
+  font-size: 1em;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.home-button:hover,
+.logout-button:hover {
+  background-color: rgba(162, 0, 255, 0.8); /* Slightly lighter on hover */
+}

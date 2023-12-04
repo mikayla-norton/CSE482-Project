@@ -1,5 +1,7 @@
 import React, {useEffect, useState} from 'react'
 import SearchBar from './components/SearchBar';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
 
 /**
  * Uses the search bar component to get a list of movies
@@ -11,6 +13,8 @@ export default function SimilarMovies() {
     const [results, setResults] = useState([]);
     const [recommendations, setRecommendations] = useState([]);
     const [movies, setMoviesList] = useState([]);
+    const { logOut } = useAuth();
+    const navigate = useNavigate();
 
     console.log(results)
 
@@ -25,7 +29,7 @@ export default function SimilarMovies() {
             let obj = {
                 "movies": listofMovies,
             }
-            let response = await fetch("http://localhost:8080/movie-based-recommendation", {
+            let response = await fetch("http://localhost:8081/movie-based-recommendation", {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json'
@@ -39,8 +43,27 @@ export default function SimilarMovies() {
         }
     }
 
+    // Logout handler
+    const handleLogout = async () => {
+        try {
+            await logOut();
+            navigate('/login');
+        } catch (error) {
+            console.error('Logout Failed:', error);
+        }
+    };
+
+    const handleGoHome = () => {
+        navigate('/'); // Navigate to home page
+    };
+
+
     return (
         <section className='main-content'> 
+            <div className="buttons-container">
+                <button onClick={handleGoHome} className="home-button">Home</button>
+                <button onClick={handleLogout} className="logout-button">Log Out</button>
+            </div>
             <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> 
             <div className="absolute w-[80vw] bg-black text-white flex flex-col gap-3 z-30 p-3 h-[80vh] justify-center items-center"> 
                 <h1 className='text-2xl'>Find similar movies</h1>
@@ -61,7 +84,6 @@ export default function SimilarMovies() {
                 <button onClick={() => {getMovieBasedRecommendations(movies)}} className='rounded-md  p-2 bg-green-500 text-gray-700'>
                     Get Recommendations
                 </button>
-                {/* Show recommendations when they are fetched */}
             </div> 
         </section>
   )
