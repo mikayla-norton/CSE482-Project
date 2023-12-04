@@ -5,6 +5,7 @@ import SignUp from "./pages/SignUp";
 import HomePage from "./pages/HomePage";
 import SimilarMovies from "./pages/SimilarMovies";
 import PersonalizedRecommendations from "./pages/PersonalizedRecommendations";
+import MovieRecommendationsResult from "./pages/MovieRecommendationResult"
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <Route exact path="/" element={<HomePage />} />
         <Route exact path="/similar-movies" element={<SimilarMovies/>}/>
         <Route exact path="/personalized-recommendations" element={<PersonalizedRecommendations/>}/>
+        <Route exact path="/movie-recommendations-result" element={<MovieRecommendationsResult/>}/>
         <Route exact path="/login" element={<Login />} />
         <Route exact path="/signup" element={<SignUp />} />
       </Routes>

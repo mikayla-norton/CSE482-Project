@@ -19,6 +19,9 @@ export default function RatingMovie(props) {
         // make it a number
         let intRating = parseInt(e.target.innerText);
         setRating(intRating);
+    
+        // callback function passed from PersonalizedRecommendations
+        props.onMovieRated(props.currentTitle, intRating);
     }
 
     const addRatingToUser = async (movie, rating) => {
