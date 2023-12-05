@@ -7,6 +7,7 @@ import HomePage from "./pages/HomePage";
 import SimilarMovies from "./pages/SimilarMovies";
 import PersonalizedRecommendations from "./pages/PersonalizedRecommendations";
 import { useAuth } from './contexts/AuthContext';
+import MovieRecommendationsResult from "./pages/MovieRecommendationResult"
 
 const ProtectedRoute = ({ children }) => {
   const { currentUser } = useAuth();
@@ -17,7 +18,6 @@ const ProtectedRoute = ({ children }) => {
 
   return children;
 };
-import MovieRecommendationsResult from "./pages/MovieRecommendationResult"
 
 function App() {
   return (

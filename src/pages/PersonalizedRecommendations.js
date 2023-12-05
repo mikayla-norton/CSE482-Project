@@ -51,8 +51,50 @@ export default function PersonalizedRecommendations() {
     const navigate = useNavigate();
     const [ratedMovies, setRatedMovies] = useState([]);
 
+    useEffect(() => {
+        if (ratedMovies.length === 0 && currentUser) {
+            getInitialUserMovies();
+        }
+    }, [ratedMovies])
+
+    const getInitialUserMovies = async () => {
+        let queryForUser = query(collection(db, "users"), where("email", "==", currentUser.email));
+        let querySnapshot = await getDocs(queryForUser);
+        let userDoc = querySnapshot.docs[0];
+        let currentMoviesObj = userDoc.data().movies;
+        let currentMovies = [];
+        Object.keys(currentMoviesObj).forEach((key) => {
+            currentMovies.push({
+                title: key,
+                rating: currentMoviesObj[key]
+            });
+        });
+        if (currentMovies.length > 0) {
+            setRatedMovies(currentMovies);
+        }
+    }
+
     const onMovieRated = (movieTitle, movieRating) => {
-        setRatedMovies(prevMovies => [...prevMovies, { title: movieTitle, rating: movieRating }]);
+        // check that the movie is not already in the list
+        let movieAlreadyRated = false;
+        ratedMovies.forEach((movie) => {
+            if (movie.title === movieTitle) {
+                movieAlreadyRated = true;
+            }
+        });
+        if (!movieAlreadyRated) {
+            setRatedMovies(prevMovies => [...prevMovies, { title: movieTitle, rating: movieRating }]);
+        } else {
+            // Substitute the value of the rating
+            let newRatedMovies = ratedMovies.map((movie) => {
+                if (movie.title === movieTitle) {
+                    return { title: movieTitle, rating: movieRating };
+                } else {
+                    return movie;
+                }
+            });
+            setRatedMovies(newRatedMovies);
+        }
     };
 
     const getUserRecommendations = async (movie) => {
