@@ -3,10 +3,6 @@ import {query, getDocs, collection, where, doc, updateDoc} from "firebase/firest
 import {db} from "../../firebaseConfig"
 import { useAuth } from '../../contexts/AuthContext';
 
-
-// TODO: CHange email constant to the current user's email
-const EMAIL = "joelnataren9@hotmail.com"
-
 export default function RatingMovie(props) {
 
     const ratings = [1, 2, 3, 4, 5];
@@ -19,14 +15,11 @@ export default function RatingMovie(props) {
     }
 
     const handleClick = (e) => {
-        // make it a number
         let intRating = parseInt(e.target.innerText);
         setRating(intRating);
-    
-        // callback function passed from PersonalizedRecommendations
         props.onMovieRated(props.currentTitle, intRating);
     }
-    
+
     const addRatingToUser = async (movie, rating) => {
         if (!currentUser) {
             console.error("No user logged in");

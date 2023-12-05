@@ -98,8 +98,6 @@ export default function PersonalizedRecommendations() {
     };
 
     const getUserRecommendations = async (movie) => {
-
-        // TODO: Get the current user's email
         const userEmail = currentUser.email;
         let queryForUser = query(collection(db, "users"), where("email", "==", userEmail)); 
         let querySnapshot = await getDocs(queryForUser);
@@ -119,20 +117,16 @@ export default function PersonalizedRecommendations() {
             },
             body: JSON.stringify(data),
         })
-        // TODO: Use the following object to display the recommendations
         let recommendationsObj = await response.json();
         console.log(recommendationsObj);
         let recommendations = [];
         Object.keys(recommendationsObj).forEach((key) => {
             recommendations.push([key, recommendationsObj[key]]);
         });
-        // Sort the list of movies by rating
         recommendations.sort((a, b) => {
             return b[1] - a[1];
         });
         displayMovieRecommendations(recommendations);
-        // displayMovieRecommendations(movieResults);  // uncomment the above lines and delete this line
-                                                    // this is displaying temporary results as backend is not running
     }
     
     const displayMovieRecommendations = (movies) => {
@@ -178,8 +172,6 @@ export default function PersonalizedRecommendations() {
                         ))}
                     </div>
                     <div className='movie-ratings'>
-                        {/* moviesRated is temporary variable (because backend could not be run)
-                            replace moviesRated to ratedMovies, which are retrieved from RatingMovie.js */}
                         {ratedMovies.length > 0 && (
                             <div className="rated-movies" style={{ flex: 1, maxHeight: '100%', width: '300px', padding: '10px', overflow: 'auto' }}>
                                 {ratedMovies.map((movie, index) => (
