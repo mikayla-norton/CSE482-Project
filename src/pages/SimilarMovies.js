@@ -13,7 +13,7 @@ import { useAuth } from '../contexts/AuthContext';
 export default function SimilarMovies() {
     const [results, setResults] = useState([]);
     const [recommendations, setRecommendations] = useState([]);
-    const [movies, setMoviesList] = useState([]);  // clear out the list inside later when connected to backend
+    const [movies, setMoviesList] = useState([]);
     const navigate = useNavigate();
     const { logOut } = useAuth();
 

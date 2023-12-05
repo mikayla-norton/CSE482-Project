@@ -1,21 +1,40 @@
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import React, {useState} from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useAuth } from '../contexts/AuthContext';
 
 export default function MovieRecommendationResults() {
-    const [displayCount, setDisplayCount] = useState(5); // State to track the number of movies displayed
+    const [displayCount, setDisplayCount] = useState(5);
     const navigate = useNavigate();
     const location = useLocation();
     const recommendation = location.state?.recommendation;
     const movies = location.state?.movies;
+    const { currentUser, logOut } = useAuth();
 
     const loadMoreMovies = () => {
-        setDisplayCount(prevCount => prevCount + 5); // Increase the number of movies displayed by 5
+        setDisplayCount(prevCount => prevCount + 5);
     };
+
+    // Logout handler
+    const handleLogout = async () => {
+        try {
+            await logOut();
+            navigate('/login');
+        } catch (error) {
+            console.error('Logout Failed:', error);
+        }
+    };
+
+    const handleGoHome = () => {
+        navigate('/');
+    };
+
 
     return (
         <section className='main-content'>
-            
+            <div className="buttons-container">
+                <button onClick={handleGoHome} className="home-button">Home</button>
+                <button onClick={handleLogout} className="logout-button">Log Out</button>
+            </div>
             <div className="absolute w-[80vw] bg-black text-white flex flex-col z-30 p-3 h-[80vh] justify-center items-center"> 
                 {
                     recommendation === "user" ? 
@@ -38,9 +57,6 @@ export default function MovieRecommendationResults() {
                         </button>
                     )}
                 </div>
-                <button className='absolute bottom-3 right-3 p-2' onClick={() => navigate("/")}>
-                    Back Home
-                </button>
             </div>
         </section>
   )

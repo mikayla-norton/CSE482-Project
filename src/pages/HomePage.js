@@ -12,22 +12,23 @@ const RECOMMENDATION_OPTIONS = {
     movieBase: "movieBase"
 }
 
-// TODO: CHange email constant to the current user's email
-const EMAIL = "joelnataren9@hotmail.com"
-
 export default function HomePage() {
-    const [user, setUser] = useState(null);
     const navigate = useNavigate();
     const auth = getAuth();
     const [recommendationOption, setRecommendationOption] = useState(RECOMMENDATION_OPTIONS.none);
     const { currentUser, logOut } = useAuth();
 
     useEffect(() => {
-        const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-            setUser(currentUser);
+        console.log("here");
+        const unsubscribe = onAuthStateChanged(auth, (user) => {
+            console.log("here 2");
+            if (!user) {
+                navigate('/login');
+            }
         });
+
         return () => unsubscribe();
-    }, []);
+    }, [navigate]);
 
     // Logout handler
     const handleLogout = async () => {
