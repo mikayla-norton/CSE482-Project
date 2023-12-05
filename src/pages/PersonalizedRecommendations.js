@@ -63,15 +63,15 @@ export default function PersonalizedRecommendations() {
         let userDoc = querySnapshot.docs[0];
         let currentMoviesObj = userDoc.data().movies;
         let currentMovies = [];
-        Object.keys(currentMoviesObj).forEach((key) => {
-            currentMovies.push({
-                title: key,
-                rating: currentMoviesObj[key]
+        if (currentMoviesObj !== undefined){
+            Object.keys(currentMoviesObj).forEach((key) => {
+                currentMovies.push({
+                    title: key,
+                    rating: currentMoviesObj[key]
+                });
             });
-        });
-        if (currentMovies.length > 0) {
-            setRatedMovies(currentMovies);
         }
+        setRatedMovies(currentMovies);
     }
 
     const onMovieRated = (movieTitle, movieRating) => {

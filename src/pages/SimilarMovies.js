@@ -72,6 +72,13 @@ export default function SimilarMovies() {
         navigate('/'); // Navigate to home page
     };
 
+    const deleteMovieAdded = (event) => {
+        let movie = event.target.parentNode.firstChild.textContent;
+        let newMovies = movies.filter((movieAdded) => {
+            return movieAdded !== movie;
+        });
+        setMoviesList(newMovies);
+    }
 
     return (
         <section className='main-content'> 
@@ -85,7 +92,11 @@ export default function SimilarMovies() {
                 <p className='text-lg'>Enter a movie title to find similar movies</p>
                 <div className="content-container" style={{ display: 'flex', justifyContent: 'space-between', maxHeight: '50%', margin:'5px' }}>
                     <div className='search-section'  style={{ flex: 1, padding: '10px' }}>
-                        <SearchBar onSearch={setResults}/>
+                        <div className="content-container" style={{ display: 'flex', justifyContent: 'space-between', maxHeight: '50%', margin:'5px', alignItems: 'center' }}>
+                            <div className='search-section'  style={{ flex: 1, padding: '10px', display: 'flex', justifyContent: 'center' }}>
+                                <SearchBar onSearch={setResults}/>
+                            </div>
+                        </div>
                         <div className='flex flex-col gap-3 justify-center items-center text-black'>
                             {results.map((title, index) => (
                                 <div key={index} className='flex flex-row gap-3 p-2 bg-gray-100 rounded-md'>
@@ -104,7 +115,10 @@ export default function SimilarMovies() {
                             <div className="added-movies" style={{ flex: 1, maxHeight: '100%', width: '300px', padding: '10px', overflow: 'auto' }}>
                                 <h2 style={{ margin: '5px'}}>Movies Added</h2>
                                 {movies.map((movie, index) => (
-                                    <p key={index} style={{ margin: '5px', border: '2px solid grey', wordWrap: 'break-word', padding: '5px'}}>{movie}</p>
+                                    <div key={index} style={{ display: 'flex', alignItems: 'center', margin: '5px', border: '2px solid grey', wordWrap: 'break-word', padding: '5px'}}>
+                                        <p style={{ flex: 1 }}>{movie}</p>
+                                        <button onClick={(deleteMovieAdded)} className="home-button">x</button>
+                                    </div>
                                 ))}
                             </div>
                         )}

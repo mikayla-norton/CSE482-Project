@@ -53,11 +53,11 @@ export default function HomePage() {
                 <h1 style={{ fontSize: '250%', fontWeight: 'bold', margin: '5%', color: '#fff', textShadow: `0 0 7px rgba(162, 0, 255, 0.8), 0 0 10px rgba(162, 0, 255, 0.8), 0 0 21px rgba(162, 0, 255, 0.8), 0 0 42px rgba(162, 0, 255, 0.8), 0 0 82px rgba(162, 0, 255, 0.8), 0 0 92px rgba(162, 0, 255, 0.8), 0 0 102px rgba(162, 0, 255, 0.8), 0 0 151px rgba(162, 0, 255, 0.8)` }}>
                     Welcome, {currentUser ? `${currentUser.displayName}` : "User"}
                 </h1>
-                <button onClick={() => navigate("/similar-movies")} className='p-2 bg-green'>
-                    Recommendations from your favorite movie
+                <button onClick={() => navigate("/similar-movies")} className='logout-button' style={{ marginBottom: '10px' }}>
+                    Recommendations from your favorite movies
                 </button>
-                <button onClick={() => navigate("/personalized-recommendations")} className='p-2 bg-green'>
-                    Personalized Recommendations
+                <button onClick={() => navigate("/personalized-recommendations")} className='logout-button' style={{ marginBottom: '10px' }}>
+                    Personalized recommendations
                 </button>
             </div> 
             
