@@ -11,6 +11,43 @@ import functools
 import pandas as pd
 import os
 
+# Set to True to use the reduced movie list below, False to use the whole csv
+reducedMovieList = True
+allowedMovieList = [
+    "2001: A Space Odyssey (1968)",
+    "Blade Runner (1982)",
+    "City of Lost Children, The (Cité des enfants perdus, La) (1995)",
+    "Clerks (1994)",
+    "Die Hard (1988)",
+    "Dragonheart (1996)",
+    "E.T. the Extra-Terrestrial (1982)",
+    "Escape to Witch Mountain (1975)",
+    "Fish Called Wanda, A (1988)",
+    "Interview with the Vampire: The Vampire Chronicles (1994)",
+    "Jumanji (1995)",
+    "Léon: The Professional (a.k.a. The Professional) (Léon) (1994)",
+    "Mask, The (1994)",
+    "Monty Python and the Holy Grail (1975)",
+    "Monty Python's Life of Brian (1979)",
+    "One Flew Over the Cuckoo's Nest (1975)",
+    "Platoon (1986)",
+    "Pulp Fiction (1994)",
+    "Raiders of the Lost Ark (Indiana Jones and the Raiders of the Lost Ark) (1981)",
+    "Reservoir Dogs (1992)",
+    "Rob Roy (1995)",
+    "Rumble in the Bronx (Hont faan kui) (1995)",
+    "Seven (a.k.a. Se7en) (1995)",
+    "Shawshank Redemption, The (1994)",
+    "Silence of the Lambs, The (1991)",
+    "Star Wars: Episode IV - A New Hope (1977)",
+    "Star Wars: Episode V - The Empire Strikes Back (1980)",
+    "Terminator 2: Judgment Day (1991)",
+    "Twelve Monkeys (a.k.a. 12 Monkeys) (1995)",
+    "Usual Suspects, The (1995)",
+    "What's Eating Gilbert Grape (1993)",
+    "Wizard of Oz, The (1939)",
+]
+
 
 class TrieNode:
     def __init__(self):
@@ -60,12 +97,17 @@ class Trie:
 # Initialize trie
 trie = Trie()
 print("Loading movie titles...")
-# TODO: File should be in AlgorithmScripts folder
-df = pd.read_csv(os.path.join(os.path.dirname(__file__),
-                 '..', 'AlgorithmScripts', 'movie.csv'))
 
-for title in df['title']:
-    trie.insert(title.lower())
+if not reducedMovieList:
+    df = pd.read_csv(os.path.join(os.path.dirname(__file__),
+                                  '..', 'AlgorithmScripts', 'movie.csv'))
+
+    for title in df['title']:
+        trie.insert(title.lower())
+else:
+    for title in allowedMovieList:
+        trie.insert(title.lower())
+
 print("Done loading movie titles.")
 
 db = database()
@@ -114,6 +156,5 @@ def get_user_based_recommendation():
 def search_movies():
     query = request.args.get('query', '').lower()
     n = int(request.args.get('n', 5))  # Default to top 5 matches
-    matches = [" ".join([word.capitalize() for word in title.split()])
-               for title in trie.search(query, n)]
+    matches = trie.search(query, n)
     return jsonify(matches)

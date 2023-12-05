@@ -6,41 +6,6 @@ import {db} from "../firebaseConfig";
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 
-const tempMovieList = [
-    "2001: A Space Odyssey (1968)",
-    "Blade Runner (1982)",
-    "City of Lost Children, The (Cité des enfants perdus, La) (1995)",
-    "Clerks (1994)",
-    "Die Hard (1988)",
-    "Dragonheart (1996)",
-    "E.T. the Extra-Terrestrial (1982)",
-    "Escape to Witch Mountain (1975)",
-    "Fish Called Wanda, A (1988)",
-    "Interview with the Vampire: The Vampire Chronicles (1994)",
-    "Jumanji (1995)",
-    "Léon: The Professional (a.k.a. The Professional) (Léon) (1994)",
-    "Mask, The (1994)",
-    "Monty Python and the Holy Grail (1975)",
-    "Monty Python's Life of Brian (1979)",
-    "One Flew Over the Cuckoo's Nest (1975)",
-    "Platoon (1986)",
-    "Pulp Fiction (1994)",
-    "Raiders of the Lost Ark (Indiana Jones and the Raiders of the Lost Ark) (1981)",
-    "Reservoir Dogs (1992)",
-    "Rob Roy (1995)",
-    "Rumble in the Bronx (Hont faan kui) (1995)",
-    "Seven (a.k.a. Se7en) (1995)",
-    "Shawshank Redemption, The (1994)",
-    "Silence of the Lambs, The (1991)",
-    "Star Wars: Episode IV - A New Hope (1977)",
-    "Star Wars: Episode V - The Empire Strikes Back (1980)",
-    "Terminator 2: Judgment Day (1991)",
-    "Twelve Monkeys (a.k.a. 12 Monkeys) (1995)",
-    "Usual Suspects, The (1995)",
-    "What's Eating Gilbert Grape (1993)",
-    "Wizard of Oz, The (1939)",
-]
-
 
 export default function PersonalizedRecommendations() {
     const [displayCount, setDisplayCount] = useState(8); // State to track the number of movies displayed
@@ -164,19 +129,34 @@ export default function PersonalizedRecommendations() {
                 <p className='text-lg'>Rate the following movies to get personalized recommendations</p>
                 <div className="content-container" style={{ display: 'flex', justifyContent: 'space-between', maxHeight: '50%', margin:'5px' }}>
                     <div className='search-section' style={{ flex: 1, padding: '10px' }}>
-                        <SearchBar onSearch={setResults} />
-                        {results.map((title, index) => (
-                            <button key={index} onClick={() => toggleModal(title)} className='p-2 bg-green'>
-                                {title}
-                            </button>
-                        ))}
+                        
+                        <div className="content-container" style={{ display: 'flex', justifyContent: 'space-between', maxHeight: '50%', margin:'5px', alignItems: 'center' }}>
+                            <div className='search-section'  style={{ flex: 1, padding: '10px', display: 'flex', justifyContent: 'center' }}>
+                                <SearchBar onSearch={setResults}/>
+                            </div>
+                        </div>
+                        
+                        <div className='flex flex-col gap-3 justify-center items-center text-black'>
+                            {results.map((title, index) => (
+                                <div key={index} className='flex flex-row gap-3 p-2 bg-gray-100 rounded-md'>
+                                    <button key={index} onClick={() => toggleModal(title)} className='p-2 bg-green'>
+                                        {title.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
+                                    </button>
+                                </div>
+                            ))}
+                        </div>
+
+
                     </div>
-                    <div className='movie-ratings'>
+                    <div className='added-movies'>
                         {ratedMovies.length > 0 && (
-                            <div className="rated-movies" style={{ flex: 1, maxHeight: '100%', width: '300px', padding: '10px', overflow: 'auto' }}>
+                            <div className="added-movies" style={{ flex: 1, maxHeight: '100%', width: '300px', padding: '10px', overflow: 'auto' }}>
                                 {ratedMovies.map((movie, index) => (
-                                    <div key={index} style={{ margin: '5px', border: '2px solid grey', wordWrap: 'break-word', padding: '5px'}}>
-                                        <p>{movie.title} : <b>{movie.rating}</b></p>
+                                    <div key={index} style={{ display: 'flex', alignItems: 'center', margin: '5px', border: '2px solid grey', wordWrap: 'break-word', padding: '5px'}}>
+                                        <p>{movie.title.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')} : <b>{movie.rating}</b></p>
+                                        <button onClick={() => toggleModal(movie.title)} className="home-button">
+                                            Edit
+                                        </button>
                                     </div>
                                 ))}
                             </div>

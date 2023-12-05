@@ -73,7 +73,7 @@ export default function SimilarMovies() {
     };
 
     const deleteMovieAdded = (event) => {
-        let movie = event.target.parentNode.firstChild.textContent;
+        let movie = event.target.parentNode.firstChild.textContent.toLowerCase();
         let newMovies = movies.filter((movieAdded) => {
             return movieAdded !== movie;
         });
@@ -100,8 +100,8 @@ export default function SimilarMovies() {
                         <div className='flex flex-col gap-3 justify-center items-center text-black'>
                             {results.map((title, index) => (
                                 <div key={index} className='flex flex-row gap-3 p-2 bg-gray-100 rounded-md'>
-                                    <button  className=''>
-                                        {title}
+                                    <button className=''>
+                                        {title.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
                                     </button>
                                     <button  onClick={() => {setMoviesList([...movies, title])}}  className="home-button">
                                         Add
@@ -114,9 +114,9 @@ export default function SimilarMovies() {
                         {movies.length > 0 && (
                             <div className="added-movies" style={{ flex: 1, maxHeight: '100%', width: '300px', padding: '10px', overflow: 'auto' }}>
                                 <h2 style={{ margin: '5px'}}>Movies Added</h2>
-                                {movies.map((movie, index) => (
+                                {movies.map((title, index) => (
                                     <div key={index} style={{ display: 'flex', alignItems: 'center', margin: '5px', border: '2px solid grey', wordWrap: 'break-word', padding: '5px'}}>
-                                        <p style={{ flex: 1 }}>{movie}</p>
+                                        <p style={{ flex: 1 }}>{title.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}</p>
                                         <button onClick={(deleteMovieAdded)} className="home-button">x</button>
                                     </div>
                                 ))}

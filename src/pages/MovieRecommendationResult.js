@@ -48,7 +48,7 @@ export default function MovieRecommendationResults() {
                 <div className='w-full flex flex-col items-center'  style={{ maxHeight: '50%', maxWidth: '80%', overflowY: 'auto' }}>
                     {movies?.slice(0, displayCount).map(([movie, rating], index) => (
                         <div key={index} className='bg-white text-black rounded-lg p-4 mb-2 w-3/4 md:w-1/2'>
-                            {movie}
+                            {movie.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ')}
                         </div>
                     ))}
                     {displayCount < movies?.length && (

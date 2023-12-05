@@ -62,7 +62,7 @@ export default function RatingMovie(props) {
 
             <div className={`z-40 absolute m-auto bg-purple-500 max-h-[95vh] rounded-2xl p-14 px-20 ${props.modalIsOpen ? 'opacity-100' : 'pointer-events-none opacity-0'}`}>
                 <div className="z-30 flex flex-col text-center text-white items-center overflow-y-auto justify-start gap-7">
-                    <h1 className='text-2xl'> {`Rate the movie: ${props.currentTitle}`} </h1>
+                    <h1 className='text-2xl'> {`Rate The Movie: ${props.currentTitle.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ')}`} </h1>
                     <p className='text-lg'>Rate the movie to get personalized recommendations</p>
                     <div className='flex flex-row gap-3'>
                         {
